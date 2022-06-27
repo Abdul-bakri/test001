@@ -1,10 +1,10 @@
-resource "aws_opensearch_domain" "test_cluster" {
+resource "aws_elasticsearch_domain" "test_cluster" {
   domain_name = "firehose-es-test"
 }
 
 resource "aws_kinesis_firehose_delivery_stream" "test_stream" {
   name        = "terraform-kinesis-firehose-test-stream"
-  destination = "opensearch"
+  destination = "elasticsearch"
 
   s3_configuration {
     role_arn           = aws_iam_role.firehose_role.arn
@@ -14,8 +14,8 @@ resource "aws_kinesis_firehose_delivery_stream" "test_stream" {
     compression_format = "GZIP"
   }
 
-  opensearch_configuration {
-    domain_arn = aws_opensearch_domain.test_cluster.arn
+  elasticsearch_configuration {
+    domain_arn = aws_elasticsearch_domain.test_cluster.arn
     role_arn   = aws_iam_role.firehose_role.arn
     index_name = "test"
     type_name  = "test"
