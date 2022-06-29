@@ -16,7 +16,7 @@ resource "aws_kinesis_firehose_delivery_stream" "central_logging_cross_account" 
 
   s3_configuration {
     role_arn           = "${aws_iam_role.central_logging_cross_account.arn}"
-    bucket_arn         = "${aws_s3_bucket.central-logging-${data.aws_region.current.name}-today.arn}"
+    bucket_arn         = "${aws_s3_bucket.central-logging-${data.aws_region}-today.arn}"
     compression_format = "GZIP"
     buffer_size        = 5
     buffer_interval    = 60
