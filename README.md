@@ -35,7 +35,7 @@ aws_session_token        = ccccccccccccccc
 ### Quickstart for Centralize Account
 
 ```
-$ git clone https://github.com/zamirajaupaj/central-logging-multi-account-environments.git
+$ git clone https://github.com/Abdul-bakri/Central-Logging-in-Multi-Account.git
 $ cd central-logging-multi-account-environments
 $ terraform init
 $ terraform plan
@@ -46,7 +46,7 @@ $ terraform apply
 ### Quickstart for Source Account
 
 ```
-$ git clone https://github.com/zamirajaupaj/central-logging-multi-account-environments/source-account.git
+$ git clone https://github.com/Abdul-bakri/Central-Logging-in-Multi-Account.git
 $ cd central-logging-multi-account-environments
 $ terraform init
 $ terraform plan
