@@ -32,8 +32,8 @@ data "aws_iam_policy_document" "policy_central_logging_cross_account" {
     ]
 
     resources = [
-      "${aws_s3_bucket.central-logging-us-east-1-today.arn}",
-      "${aws_s3_bucket.central-logging-us-east-1-today.arn}/*",
+      "${aws_s3_bucket.central-logging-${data.aws_region.current.name}-today.arn}",
+      "${aws_s3_bucket.central-logging-${data.aws_region.current.name}-today.arn}/*",
     ]
   }
 
