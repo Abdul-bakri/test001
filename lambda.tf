@@ -26,7 +26,7 @@ resource "aws_lambda_permission" "central-logging" {
   statement_id  = "central-logging-sumo"
   action        = "lambda:InvokeFunction"
   function_name = "${aws_lambda_function.central_logging_cross_account.function_name}"
-  principal     = "logs.eu-west-1.amazonaws.com"
+  principal     = "logs.${data.aws_region.current.name}.amazonaws.com"
   source_arn    = "${aws_cloudwatch_log_group.lambda_central.arn}"
 }
 
