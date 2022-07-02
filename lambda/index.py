@@ -14,7 +14,7 @@ logger.setLevel(logging.INFO)
 
 def transformLogEvent(log_event, accountId, logGroupName):
 
-    region = "eu-west-1"
+    region = "${data.aws_region}"
     log = { 
         "log_event": log_event['message'].strip(),
         "accountId": accountId,
