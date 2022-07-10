@@ -1,14 +1,14 @@
-resource "aws_elasticsearch_domain" "central_logging_cross_account" {
+resource "aws_opensearch_domain" "central_logging_cross_account" {
   domain_name           = "central-logging"
-  elasticsearch_version = "6.5"
-
+  engine_version = "Elasticsearch_7.10"
+  
   log_publishing_options {
     cloudwatch_log_group_arn = "${aws_cloudwatch_log_group.central_logging_cross_account_els.arn}"
     log_type                 = "INDEX_SLOW_LOGS"
   }
 
   cluster_config {
-    instance_type = "r5.large.elasticsearch"
+    instance_type = "r4.large.search"
   }
 
   ebs_options {
@@ -22,7 +22,7 @@ resource "aws_elasticsearch_domain" "central_logging_cross_account" {
   }
 
   access_policies = <<POLICY
-{
+{r4.large.search
   "Version": "2012-10-17",
   "Statement": [
     {
