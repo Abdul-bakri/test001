@@ -7,7 +7,7 @@ resource "aws_kinesis_stream" "central_logging_cross_account" {
 
 resource "aws_kinesis_firehose_delivery_stream" "central_logging_cross_account" {
   name        = "${local.kinesis_name}"
-  destination = "elasticsearch"
+  destination = "opensearch"
 
   kinesis_source_configuration {
     kinesis_stream_arn = "${aws_kinesis_stream.central_logging_cross_account.arn}"
@@ -22,8 +22,8 @@ resource "aws_kinesis_firehose_delivery_stream" "central_logging_cross_account" 
     buffer_interval    = 60
   }
 
-  elasticsearch_configuration {
-    domain_arn = "${aws_elasticsearch_domain.central_logging_cross_account.arn}"
+  opensearch_configuration {
+    domain_arn = "${aws_opensearch_domain.central_logging_cross_account.arn}"
     role_arn   = "${aws_iam_role.central_logging_cross_account.arn}"
     index_name = "central_logging_cross_account"
     type_name  = "central_logging_cross_account"
