@@ -16,7 +16,7 @@ data "aws_iam_policy_document" "assume_role_central_logging_cross_account_log" {
 
     principals {
       type        = "Service"
-      identifiers = ["logs.${data.aws_region}.amazonaws.com"]
+      identifiers = ["logs.us-east-1.amazonaws.com"]
     }
   }
 }
