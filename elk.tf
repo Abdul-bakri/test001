@@ -1,6 +1,6 @@
 resource "aws_opensearch_domain" "central_logging_cross_account" {
   domain_name           = "central-logging"
-  engine_version = "Elasticsearch_7.10"
+  engine_version = "OpenSearch_1.1"
   
   log_publishing_options {
     cloudwatch_log_group_arn = "${aws_cloudwatch_log_group.central_logging_cross_account_els.arn}"
@@ -22,7 +22,7 @@ resource "aws_opensearch_domain" "central_logging_cross_account" {
   }
 
   access_policies = <<POLICY
-{r4.large.search
+{
   "Version": "2012-10-17",
   "Statement": [
     {
