@@ -7,7 +7,7 @@ resource "aws_kinesis_stream" "central_logging_cross_account" {
 
 resource "aws_kinesis_firehose_delivery_stream" "central_logging_cross_account" {
   name        = "${local.kinesis_name}"
-  destination = "opensearch"
+  destination = "elasticsearch"
 
   kinesis_source_configuration {
     kinesis_stream_arn = "${aws_kinesis_stream.central_logging_cross_account.arn}"
