@@ -22,7 +22,7 @@ resource "aws_kinesis_firehose_delivery_stream" "central_logging_cross_account" 
     buffer_interval    = 60
   }
 
-  opensearch_configuration {
+  elasticsearch_configuration {
     domain_arn = "${aws_opensearch_domain.central_logging_cross_account.arn}"
     role_arn   = "${aws_iam_role.central_logging_cross_account.arn}"
     index_name = "central_logging_cross_account"
