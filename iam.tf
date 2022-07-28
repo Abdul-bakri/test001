@@ -1,26 +1,29 @@
-resource "aws_iam_role" "central_logging_cross_account" {
-  name               = "central-logging"
-  assume_role_policy = "${data.aws_iam_policy_document.assume_role_central_logging_cross_account.json}"
-}
-
-data "aws_iam_policy_document" "assume_role_central_logging_cross_account" {
-  statement {
-    actions = ["sts:AssumeRole"]
-
-    principals {
-      type        = "Service"
-      identifiers = ["firehose.amazonaws.com"]
+resource "aws_iam_role" "central_logging_acadian" {
+  name               = "ES_role_for_S3"
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "firehose.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole"
     }
-  }
+  ]
+}
+EOF
 }
 
-resource "aws_iam_role_policy" "central_logging_cross_account" {
+resource "aws_iam_role_policy" "central_logging_acadian" {
   name   = "central-logging"
-  role   = "${aws_iam_role.central_logging_cross_account.id}"
-  policy = "${data.aws_iam_policy_document.policy_central_logging_cross_account.json}"
+  role   = aws_iam_role.central_logging_acadian.id
+  policy = data.aws_iam_policy_document.policy_central_logging_acadian.json
 }
 
-data "aws_iam_policy_document" "policy_central_logging_cross_account" {
+data "aws_iam_policy_document" "policy_central_logging_acadian" {
   statement {
     actions = [
       "s3:PutObject",
@@ -30,10 +33,10 @@ data "aws_iam_policy_document" "policy_central_logging_cross_account" {
       "s3:GetBucketLocation",
       "s3:AbortMultipartUpload",
     ]
-
+    effect = "Allow"
     resources = [
-      "${aws_s3_bucket.central-logging-us-east-1-today.arn}",
-      "${aws_s3_bucket.central-logging-us-east-1-today.arn}/*",
+      "${aws_s3_bucket.logging-acadian.arn}",
+      "${aws_s3_bucket.logging-acadian.arn}/*",
     ]
   }
 
@@ -44,79 +47,56 @@ data "aws_iam_policy_document" "policy_central_logging_cross_account" {
       "kinesis:GetRecords",
       "kinesis:ListStreams",
     ]
-
+    effect = "Allow"
     resources = [
-      "${aws_kinesis_stream.central_logging_cross_account.arn}",
+      "${aws_kinesis_stream.central_logging_acadian.arn}",
+      "${aws_kinesis_stream.central_logging_acadian.arn}/*"
     ]
   }
 
   statement {
     actions = [
-      "lambda:InvokeFunction",
-      "lambda:GetFunctionConfiguration",
+      "es:DescribeOpensearchDomain", ## For Opensearch
+      "es:DescribeOpensearchDomains", ## For Opensearch
+      "es:DescribeOpensearchDomainConfig", ## For Opensearch
+      "es:DescribeDomain", ## For OpenSearch
+      "es:DescribeDomains", ## For OpenSearch
+      "es:DescribeDomainConfig", ## For OpenSearch
+      "es:ESHttpPost",
+      "es:ESHttpPut"
     ]
-
+    effect  = "Allow"
     resources = [
-      "${aws_lambda_function.central_logging_cross_account.arn}:*",
+      "${aws_opensearch_domain.central_logging_acadian.arn}",
+      "${aws_opensearch_domain.central_logging_acadian.arn}/*"
     ]
   }
 
   statement {
     actions = [
-      "es:*",
+      "es:ESHttpGet"
     ]
-
+    effect  = "Allow"
     resources = [
-      "*",
+      "${aws_opensearch_domain.central_logging_acadian.arn}/_all/_settings",
+      "${aws_opensearch_domain.central_logging_acadian.arn}/_cluster/stats",
+      "${aws_opensearch_domain.central_logging_acadian.arn}/*/_mapping/logs",
+      "${aws_opensearch_domain.central_logging_acadian.arn}/_nodes",
+      "${aws_opensearch_domain.central_logging_acadian.arn}/_nodes/stats",
+      "${aws_opensearch_domain.central_logging_acadian.arn}/_nodes/*/stats",
+      "${aws_opensearch_domain.central_logging_acadian.arn}/_stats",
+      "${aws_opensearch_domain.central_logging_acadian.arn}/*/_stats"
     ]
   }
 
   statement {
     actions = [
-      "logs:CreateLogGroup",
-      "logs:CreateLogStream",
-      "logs:PutLogEvents",
-      "logs:DescribeLogStreams",
+      "kms:Decrypt",
+      "kms:GenerateDataKey"
     ]
-
+    effect  = "Allow"
     resources = [
-      "arn:aws:logs:*:*:*",
-    ]
-  }
-}
-
-resource "aws_iam_role" "central_logging_cross_account_lambda" {
-  name               = "central-logging-lambda"
-  assume_role_policy = "${data.aws_iam_policy_document.assume_role_central_logging_cross_account_lambda.json}"
-}
-
-data "aws_iam_policy_document" "assume_role_central_logging_cross_account_lambda" {
-  statement {
-    actions = ["sts:AssumeRole"]
-
-    principals {
-      type        = "Service"
-      identifiers = ["lambda.amazonaws.com"]
-    }
-  }
-}
-
-resource "aws_iam_role_policy" "central_logging_cross_account_policy_lambda" {
-  name   = "central-logging-policy-lambda"
-  role   = "${aws_iam_role.central_logging_cross_account_lambda.id}"
-  policy = "${data.aws_iam_policy_document.policy_central_logging_cross_account_lambda.json}"
-}
-
-data "aws_iam_policy_document" "policy_central_logging_cross_account_lambda" {
-  statement {
-    actions = [
-      "logs:*",
-      "kinesis:*",
-      "firehose:*",
-    ]
-
-    resources = [
-      "*",
+      "arn:aws:kms:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:key/${var.encrypt_at_rest_kms_key_id}"
     ]
   }
 }
