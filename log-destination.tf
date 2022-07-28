@@ -51,7 +51,7 @@ data "aws_iam_policy_document" "central_logging_acadian_destination_policy" {
 
       # Number of Source Account where the logs are coming from
       identifiers = [
-        "479305653407",
+        "11111111111111",
       ]
     }
 
