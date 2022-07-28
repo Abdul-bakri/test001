@@ -1,7 +1,7 @@
 # Central-Logging-in-Multi-Account
 
 # central-logging-multi-account-environments
-## Fuctions
+## Fuction
 Centralized logging is often required in large enterprise environments for a number of reasons, ranging from compliance and security to analytics and application-specific needs.
 
 I’ve seen that in a multi-account environment, whether the accounts belong to the same line of business or multiple business units, collecting logs in a central, dedicated logging account is an established best practice. It helps security teams detect malicious activities both in real-time and during incident response. It provides protection to log data in case it is accidentally or intentionally deleted. It also helps application teams correlate and analyze log data across multiple application tiers.
