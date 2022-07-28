@@ -29,4 +29,4 @@ I’ve seen that in a multi-account environment, whether the accounts belong to 
 * terraform init
 * terraform plan 
 * terraform apply
-This creates the Destination account.(To create the monitored account(s) read the readme in the Monitored account folder) 
+This creates the Destination account.(To create the monitored account(s) read the readme in the External-log-account-CM127 folder) 
