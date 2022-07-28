@@ -21,3 +21,12 @@ I’ve seen that in a multi-account environment, whether the accounts belong to 
 
 ### NOTE 
 * The identifier in the log_destination.tf should contain the account ID of the monitored account or accounts depending on the number of account you want to monitor 
+
+
+### Procedure
+* git clone git clone https://github.com/Abdul-bakri/Central-Logging-in-Multi-Account.git
+* cd Central-Logging-in-Multi-Account
+* terraform init
+* terraform plan 
+* terraform apply
+This creates the Destination account.(To create the monitored account(s) read the readme in the Monitored account folder) 
