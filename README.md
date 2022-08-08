@@ -30,3 +30,9 @@ I’ve seen that in a multi-account environment, whether the accounts belong to 
 * terraform plan 
 * terraform apply
 This creates the Destination account.(To create the monitored account(s) read the readme in the External-log-account-CM127 folder) 
+
+# OpenSearch in VPC
+This repository contains a reusable [Terraform](https://www.terraform.io) module for deploying [Amazon OpenSearch Service](https://aws.amazon.com/opensearch-service) domain inside [Virtual Private Cloud (VPC)](https://aws.amazon.com/vpc). OpenSearch domain is exposed to the end users through the workspace cidr block.
+
+## Architecture
+![Centralized Monitoring Logs - Architecture](docs/architecture.png)
