@@ -11,7 +11,6 @@ I’ve seen that in a multi-account environment, whether the accounts belong to 
 * Minimum two AWS Accounts
   1) Destination Account(receives information from the monitored account(s))
   2) Monitored Account
-* Python 3.7
 * Terraform 
 **[Install](https://learn.hashicorp.com/terraform/getting-started/install.html)**
 
